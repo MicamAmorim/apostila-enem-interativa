@@ -169,13 +169,23 @@ Para qualquer questão canônica:
 
 Isso impede que uma solução antiga ou um override de índice volte a sobrescrever o gabarito oficial.
 
+## Auditoria executável
+
+O site agora carrega `canonical-integrity.js` depois da camada canônica. Ele fornece duas verificações reproduzíveis:
+
+- `runCanonicalStructuralAudit()` — confere 17 anos, 45 posições 136–180 por edição, ausência de buracos, unicidade de `CO_ITEM` dentro de cada prova, índice de origem válido e gabarito A–E ou anulação explícita;
+- `await runCanonicalSolutionAudit()` — percorre as **765 questões**, gera a solução que o usuário realmente vê, extrai conclusões `Alternativa A–E`, compara com o gabarito do Caderno 5 Amarelo e agrega os resultados por família (`byFamily`).
+
+A auditoria de soluções considera falha qualquer conclusão explícita diferente da alternativa oficial. Soluções específicas não suficientemente validadas continuam em quarentena e não podem alterar o gabarito.
+
 ## Arquivos da reconstrução
 
 - `canonical-map-2009-2016.js` — 360 posições
 - `canonical-map-2017-2025.js` — 405 posições
 - `canonical-bank.js` — reconstrução, fallbacks, trava de gabarito e auditoria das soluções
+- `canonical-integrity.js` — auditoria estrutural e de soluções, reproduzível no runtime
 - `geometry-hotfix.js` — protegido para não mutar itens já canônicos
-- `payload/boot.js` — carrega a camada canônica depois dos módulos legados
+- `payload/boot.js` — carrega a camada canônica depois dos módulos legados e, por último, o auditor de integridade
 
 ## Critério para futuras atualizações
 
