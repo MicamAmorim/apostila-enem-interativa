@@ -31,6 +31,7 @@ var FIG={
 173:{c:'G2',a:'A',i:'Como a extensão dos túneis é a mesma, compare as áreas das seções transversais semicirculares.',f:'\\(A_{semi}=\\pi r^2/2\\)'}
 };
 function apply(q){
+ if(q&&q.canonicalYellow)return q;
  if(!q||Number(q.year)!==2025)return q;
  var n=Number(q.index);
  if(GEOM2025.indexOf(n)>=0){
