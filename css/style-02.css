@@ -1,0 +1,205 @@
+.worked-example{border:1px solid rgba(110,214,255,.24);border-radius:14px;background:rgba(110,214,255,.035);padding:14px;margin-top:14px}
+.worked-example .example-label{color:var(--accent);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}.worked-example h4{margin:6px 0 7px}.worked-example .prompt{color:#e7eff9;line-height:1.55;font-size:13px}
+.example-steps{display:grid;gap:7px;margin:11px 0}.example-step{display:grid;grid-template-columns:25px 1fr;gap:8px;font-size:12px;color:#cfd9e7;line-height:1.5}.example-step b{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:#15233a;color:var(--accent);font-size:10px}
+.example-answer{padding:9px 11px;border-radius:10px;background:rgba(88,214,141,.07);border:1px solid rgba(88,214,141,.22);font-size:12px;color:#bcebcf}
+.pitfalls{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.pitfall{font-size:10px;color:#e4c5ca;border:1px solid rgba(255,115,133,.22);background:rgba(255,115,133,.05);border-radius:999px;padding:6px 9px}
+.exam-guide{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.guide-card{border:1px solid var(--line);border-radius:15px;background:#0c1426;padding:15px}.guide-card h3{font-size:14px;margin:0 0 10px}.guide-list{display:grid;gap:8px}.guide-item{display:grid;grid-template-columns:20px 1fr;gap:7px;font-size:12px;color:#cdd8e7;line-height:1.45}.guide-item span{color:var(--accent)}
+.proof-zone{margin-top:18px;border:1px solid var(--line);border-radius:17px;padding:16px;background:rgba(12,20,38,.65)}.proof-zone>h3{margin:0 0 5px}.proof-zone>p{margin:0 0 14px;color:var(--muted);font-size:12px}
+.proof-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.proof-tab{border:1px solid var(--line);background:#0d172a;color:var(--muted);border-radius:10px;padding:8px 11px}.proof-tab.active{border-color:var(--accent);color:var(--accent);background:rgba(110,214,255,.06)}
+.proof-panel{display:grid;grid-template-columns:220px minmax(0,1fr);gap:14px}.proof-controls{border:1px solid var(--line);border-radius:13px;padding:13px;background:#0b1426}.proof-controls label{display:block;margin:8px 0}.proof-controls label span{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:5px}.proof-visual{border:1px solid var(--line);border-radius:13px;background:#07101d;padding:10px;min-width:0}.proof-svg{width:100%;height:auto;display:block}.proof-explain{margin-top:8px;font-size:11px;color:var(--muted);line-height:1.5}
+.mastery-card-index{font-size:10px;color:var(--accent);letter-spacing:.08em;margin-bottom:5px}
+@media(max-width:900px){.learning-objectives{grid-template-columns:1fr 1fr}.formula-sheet{grid-template-columns:1fr}.proof-panel{grid-template-columns:1fr}.exam-guide{grid-template-columns:1fr}}
+@media(max-width:520px){.learning-objectives{grid-template-columns:1fr}.route-step:not(:last-child)::after{display:none}.study-route{display:grid}.chapter-card summary{padding:14px}.chapter-body{padding:0 14px 15px}}
+
+
+/* v4 — fórmulas e alternativas revisadas */
+.formula-math{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  overflow-x:auto;
+  padding:10px 13px;
+  font-size:1.05rem;
+  line-height:1.35;
+}
+.formula-math mjx-container{
+  margin:0!important;
+  font-size:112%!important;
+}
+.formula-card .tex{
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:4px 0;
+}
+.formula-card .tex mjx-container{
+  margin:.25em 0!important;
+  font-size:108%!important;
+}
+.alt-math mjx-container{
+  margin:0!important;
+  font-size:112%!important;
+}
+.visual-alternatives-notice{
+  margin:14px 0 16px;
+  padding:15px;
+  border:1px solid rgba(110,214,255,.32);
+  border-radius:14px;
+  background:rgba(110,214,255,.055);
+}
+.visual-alternatives-notice strong{color:var(--accent)}
+.visual-alternatives-notice p{
+  margin:7px 0 12px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+.answer-visual-placeholder{
+  border-style:dashed;
+}
+.answer-visual-placeholder .missing-alt{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  color:var(--muted);
+}
+.answer-visual-placeholder .alt-letter{
+  color:var(--accent);
+  flex:0 0 auto;
+}
+.official-preview{margin-top:13px}
+.official-page-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:11px;
+}
+.official-page-head strong{color:var(--text)}
+.official-page-canvas{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:white;
+}
+@media(max-width:600px){
+  .formula-math{font-size:1rem}
+  .answer-btn{padding:13px 14px}
+  .answer-text{line-height:1.45}
+}
+
+/* v5 — padrões canônicos e interpretação */
+.decoder-box{
+  border:1px solid rgba(110,214,255,.28);
+  background:linear-gradient(145deg,rgba(110,214,255,.07),rgba(157,140,255,.045));
+  border-radius:20px;padding:20px;margin-bottom:20px
+}
+.decoder-title h3{margin:10px 0 5px;font-size:22px}
+.decoder-title p{margin:0;color:var(--muted)}
+.decoder-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:18px}
+.decoder-step{border:1px solid var(--line);border-radius:14px;padding:14px;background:rgba(8,16,31,.62)}
+.decoder-step strong{display:block;font-size:13px;color:#eef7ff;margin-bottom:6px}
+.decoder-step p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+.case-toolbar{display:flex;justify-content:space-between;gap:10px;margin:8px 0 12px}
+.case-toolbar strong,.case-toolbar span{display:block}
+.case-toolbar span{font-size:12px;color:var(--muted);margin-top:3px}
+.case-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.case-card{border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+.case-card[open]{border-color:rgba(110,214,255,.36)}
+.case-card summary{list-style:none;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:16px;cursor:pointer}
+.case-card summary::-webkit-details-marker{display:none}
+.case-number{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:rgba(110,214,255,.08);border-radius:999px;padding:6px 8px}
+.case-title{font-weight:750;font-size:14px}
+.case-chevron{color:var(--muted);font-size:18px}
+.case-card[open] .case-chevron{transform:rotate(180deg)}
+.case-body{padding:0 16px 16px;border-top:1px solid var(--line)}
+.case-section{margin-top:13px}
+.case-section small{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:9px;margin-bottom:4px}
+.case-section p,.case-section li{color:var(--muted);font-size:12px;line-height:1.6}
+.case-section p{margin:0}.case-section ol{margin:5px 0 0;padding-left:20px}
+.case-formula{margin-top:12px;padding:11px 12px;border-radius:11px;background:#091326;border:1px solid var(--line);overflow-x:auto}
+.case-formula mjx-container{margin:0!important}
+.case-trap{margin-top:10px;padding:10px 11px;border-radius:10px;background:rgba(255,200,87,.06);border:1px solid rgba(255,200,87,.25);font-size:11px;color:#d8c796;line-height:1.5}
+.case-practice-btn{margin-top:12px}
+.case-chip{display:inline-flex;align-items:center;min-height:26px;padding:0 9px;border-radius:999px;border:1px solid rgba(255,200,87,.3);background:rgba(255,200,87,.06);color:#ffd980;font-size:10px;font-weight:700}
+.case-solution-step{border-color:rgba(255,200,87,.26);background:rgba(255,200,87,.04)}
+.question-toolbar{grid-template-columns:120px minmax(150px,1fr) minmax(160px,1fr) minmax(180px,1fr) 130px 150px auto}
+@media(max-width:1100px){.decoder-steps{grid-template-columns:repeat(3,minmax(0,1fr))}.question-toolbar{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){.case-grid{grid-template-columns:1fr}.decoder-steps{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.decoder-steps{grid-template-columns:1fr}.question-toolbar{grid-template-columns:1fr}}
+
+/* v6 — biblioteca de experimentos visuais */
+.visual-proof-intro{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  padding:15px 16px;border:1px solid rgba(110,214,255,.25);
+  border-radius:15px;background:rgba(110,214,255,.045);margin-bottom:14px
+}
+.visual-proof-intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.55;flex:1}
+.experiment-picker{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:thin}
+.experiment-pill{
+  flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:42px;padding:0 13px;
+  border:1px solid var(--line);border-radius:999px;background:#0d1628;color:var(--muted);white-space:nowrap
+}
+.experiment-pill span{font-size:9px;color:#697790}
+.experiment-pill.active{border-color:var(--accent);color:var(--text);background:rgba(110,214,255,.08)}
+.experiment-card{border:1px solid var(--line);border-radius:20px;background:var(--card);overflow:hidden}
+.experiment-head{padding:20px 20px 15px;border-bottom:1px solid var(--line)}
+.experiment-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.experiment-head h3{font-size:24px;margin:11px 0 7px}
+.experiment-formula{font-family:"STIX Two Math","Cambria Math",Cambria,serif;font-size:18px;overflow-x:auto}
+.experiment-formula mjx-container{margin:.2em 0!important}
+.prediction-box{padding:18px 20px;border-bottom:1px solid var(--line);background:rgba(8,16,31,.42)}
+.prediction-box small,.discovery-box small{color:var(--accent);font-size:9px;letter-spacing:.11em;font-weight:800}
+.prediction-box p{font-size:15px;line-height:1.55;margin:8px 0 12px}
+.prediction-options{display:flex;gap:8px;flex-wrap:wrap}
+.prediction-option{
+  min-height:42px;padding:8px 13px;border-radius:11px;border:1px solid var(--line);
+  background:#0d1628;color:var(--text)
+}
+.prediction-option.correct{border-color:var(--good);background:rgba(88,214,141,.09)}
+.prediction-option.wrong{border-color:var(--bad);background:rgba(255,115,133,.09)}
+.prediction-feedback{min-height:20px;margin-top:9px;font-size:12px;color:var(--muted)}
+.prediction-feedback.good{color:var(--good)} .prediction-feedback.bad{color:#ff9cab}
+.experiment-workspace{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:390px;position:relative}
+.experiment-workspace.locked::after{
+  content:"";position:absolute;inset:0;background:rgba(8,13,26,.68);backdrop-filter:blur(2px);z-index:5
+}
+.workspace-lock{
+  display:none;position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:#0b1427;border:1px solid var(--line);padding:12px 15px;border-radius:12px;
+  color:#dce8f6;font-size:12px;text-align:center;max-width:260px
+}
+.experiment-workspace.locked .workspace-lock{display:block}
+.experiment-controls{padding:18px;border-right:1px solid var(--line);background:#0c1426}
+.experiment-controls label{display:block;margin:0 0 14px}
+.exp-range>span{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin-bottom:6px}
+.exp-range b{color:var(--text)}
+.exp-check{display:flex!important;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.exp-check input{width:auto!important;min-height:auto!important}
+.conversion-factor{
+  margin-top:16px;padding:13px;border:1px solid var(--line);border-radius:12px;
+  font-family:"STIX Two Math","Cambria Math",serif;font-size:18px;text-align:center
+}
+.conversion-factor span{display:inline-block;padding:0 5px}
+.experiment-visual{padding:15px;min-width:0;display:grid;place-items:center;background:
+  linear-gradient(rgba(110,214,255,.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(110,214,255,.025) 1px,transparent 1px),#091121;background-size:28px 28px}
+.exp-svg{width:100%;height:auto;max-height:390px;display:block}
+.discovery-box{padding:18px 20px;border-top:1px solid var(--line);background:linear-gradient(90deg,rgba(88,214,141,.055),transparent)}
+.discovery-box p{color:#dbe7f4;line-height:1.65;margin:8px 0 12px}
+.experiment-formula.final{margin:10px 0 14px;padding:10px 12px;border:1px solid rgba(88,214,141,.25);border-radius:11px;background:rgba(88,214,141,.035)}
+.practice-exp-btn{margin-top:3px}
+@media(max-width:800px){
+  .experiment-workspace{grid-template-columns:1fr}
+  .experiment-controls{border-right:0;border-bottom:1px solid var(--line)}
+  .experiment-visual{min-height:320px}
+}
+@media(max-width:600px){
+  .experiment-head h3{font-size:21px}
+  .prediction-options{display:grid;grid-template-columns:1fr}
+  .prediction-option{text-align:left}
+  .experiment-picker{margin-right:-14px;padding-right:14px}
+}
