@@ -30,10 +30,10 @@
     },
     '2020-168': {
       index:168, discipline:'matematica',
-      context:'Num recipiente com a forma de paralelepípedo reto-retângulo, colocou-se água até a altura de 8 cm e um objeto, que ficou flutuando na superfície da água. Para retirar o objeto de dentro do recipiente, a altura da coluna de água deve ser de, pelo menos, 15 cm. Para a coluna de água chegar até essa altura, é necessário colocar dentro do recipiente bolinhas de volume igual a 6 cm³ cada, que ficarão totalmente submersas. Na figura original, a base interna do recipiente mede 4 cm × 3 cm e a altura total indicada é 17 cm. O número mínimo de bolinhas necessárias para que se possa retirar o objeto que flutua na água é',
+      context:'Num recipiente com a forma de paralelepípedo reto-retângulo, colocou-se água até a altura de 8 cm e um objeto, que ficou flutuando na superfície da água. Para retirar o objeto de dentro do recipiente, a altura da coluna de água deve ser de, pelo menos, 15 cm. Para a coluna de água chegar até essa altura, é necessário colocar dentro do recipiente bolinhas de volume igual a 6 cm³ cada, que ficarão totalmente submersas.',
       alternatives:[
         {letter:'A',text:'14.'},{letter:'B',text:'16.'},{letter:'C',text:'18.'},{letter:'D',text:'30.'},{letter:'E',text:'34.'}
-      ], correctAlternative:'A', files:[], alternativesIntroduction:''
+      ], correctAlternative:'A', files:['https://enem.dev/2020/questions/168/b97cd861-19d3-4103-8332-c96d5cdc6bf0.png'], alternativesIntroduction:'O número mínimo de bolinhas necessárias para que se possa retirar o objeto que flutua na água, seguindo as instruções dadas, é de'
     },
     '2020-179': {
       index:179, discipline:'matematica',
@@ -44,10 +44,10 @@
     },
     '2023-174': {
       index:174, discipline:'matematica',
-      context:'Uma pessoa comprou um ingresso para o cinema em cuja entrada está afixado um mapa com a representação bidimensional do posicionamento das poltronas. Após consultar o mapa, começou a subir uma das escadas e parou na posição indicada pela estrela, direcionada para o norte. Para encontrar sua poltrona, deveria continuar subindo a escada na direção norte por mais quatro fileiras e olhar à sua direita; sua poltrona seria a terceira. As poltronas são identificadas por uma letra (fileira) e um número (posição na fileira). A poltrona dessa pessoa é a identificada por',
+      context:'Uma pessoa comprou um ingresso para o cinema em cuja entrada está afixado um mapa com a representação bidimensional do posicionamento das poltronas, conforme a figura. Essa pessoa, após consultar o mapa, começou a subir uma das escadas e parou na posição indicada pela estrela, direcionada para o norte. Ela conferiu seu bilhete e observou que, para encontrar sua poltrona, deveria partir do ponto onde estava, continuar subindo a escada na direção norte por mais quatro fileiras e olhar à sua direita, e sua poltrona será a terceira. Nesse cinema, as poltronas são identificadas por uma letra, que indica a fileira, e um número, que fornece a posição da poltrona na fileira, respectivamente.',
       alternatives:[
         {letter:'A',text:'A6.'},{letter:'B',text:'H1.'},{letter:'C',text:'H6.'},{letter:'D',text:'I1.'},{letter:'E',text:'I6.'}
-      ], correctAlternative:'E', files:[], alternativesIntroduction:''
+      ], correctAlternative:'E', files:['https://enem.dev/2023/questions/174/d21e916b-a5fc-441e-b782-d2d4aca3522b.png'], alternativesIntroduction:'A poltrona dessa pessoa é a identificada por'
     }
   };
 
