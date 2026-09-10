@@ -40,7 +40,7 @@
     }
 
     if(!html || !/<html[\s>]/i.test(html)) throw new Error('HTML reconstruído é inválido.');
-    html=html.replace('</body>','<script src="/geometry-review.js?v=20260910-3"></'+'script></body>');
+    html=html.replace('</body>','<script src="/geometry-review.js?v=20260910-3"></'+'script><script src="/geometry-hotfix.js?v=20260910-1"></'+'script></body>');
     document.open();
     document.write(html);
     document.close();
