@@ -1,22 +1,50 @@
 (async()=>{
+  const decodeBase64=(input)=>{
+    const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    const clean=String(input||'').replace(/[^A-Za-z0-9+/=]/g,'').replace(/=+$/,'');
+    const bytes=[];
+    let buffer=0,bits=0;
+    for(const ch of clean){
+      const value=alphabet.indexOf(ch);
+      if(value<0) continue;
+      buffer=(buffer<<6)|value;
+      bits+=6;
+      if(bits>=8){
+        bits-=8;
+        bytes.push((buffer>>bits)&255);
+        buffer&=(1<<bits)-1;
+      }
+    }
+    return new Uint8Array(bytes);
+  };
+
   try{
-    const raw=atob(window.__SITE_B64||"");
-    const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
+    const bytes=decodeBase64(window.__SITE_B64);
+    if(bytes.length<10 || bytes[0]!==0x1f || bytes[1]!==0x8b){
+      throw new Error('Payload da apostila inválido ou incompleto.');
+    }
+
     let html;
-    if("DecompressionStream" in window){
-      const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+    if('DecompressionStream' in window){
+      const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
       html=await new Response(stream).text();
     }else{
       await new Promise((resolve,reject)=>{
-        const s=document.createElement("script");
-        s.src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js";
-        s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
+        const s=document.createElement('script');
+        s.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';
+        s.onload=resolve;
+        s.onerror=reject;
+        document.head.appendChild(s);
       });
       html=new TextDecoder().decode(window.pako.ungzip(bytes));
     }
-    document.open();document.write(html);document.close();
+
+    if(!html || !/<html[\s>]/i.test(html)) throw new Error('HTML reconstruído é inválido.');
+    document.open();
+    document.write(html);
+    document.close();
   }catch(err){
-    document.body.innerHTML='<main style="font-family:system-ui;padding:2rem;max-width:700px;margin:auto"><h1>Não foi possível iniciar a apostila</h1><p>Recarregue a página. Se o problema continuar, use um navegador atualizado.</p><pre style="white-space:pre-wrap">'+String(err)+'</pre></main>';
+    document.body.innerHTML=`<main style="font-family:system-ui;padding:2rem;max-width:700px;margin:auto;color:#f3f6fb;background:#0b1020;min-height:100vh"><h1>Não foi possível iniciar a apostila</h1><p style="color:#9ca8bd">O pacote publicado está incompleto. O erro abaixo ajuda a identificar o ponto exato.</p><pre style="white-space:pre-wrap;color:#ff9cab">${String(err)}</pre></main>`;
     console.error(err);
   }
 })();
