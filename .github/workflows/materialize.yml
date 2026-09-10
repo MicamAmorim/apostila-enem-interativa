@@ -1,0 +1,94 @@
+name: Materialize full site source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/materialize.yml'
+      - '.bootstrap/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .bootstrap/part-*.txt | tr -d '\n\r' | base64 --decode > /tmp/site.tar.gz
+          mkdir -p /tmp/site
+          tar -xzf /tmp/site.tar.gz -C /tmp/site
+
+          APP_PATH="$(find /tmp/site -type f -name app.js -print -quit)"
+          if [ -z "$APP_PATH" ]; then
+            echo 'app.js não encontrado no arquivo reconstruído.' >&2
+            find /tmp/site -maxdepth 4 -type f -print >&2
+            exit 1
+          fi
+          SRC="$(dirname "$APP_PATH")"
+          echo "Fonte reconstruída em: $SRC"
+
+          test -f "$SRC/index.html"
+          test -f "$SRC/styles.css"
+          test -d "$SRC/data"
+
+          cp "$SRC/index.html" ./index.html
+          cp "$SRC/app.js" ./app.js
+          cp "$SRC/styles.css" ./styles.css
+          rm -rf ./data
+          cp -R "$SRC/data" ./data
+
+          if [ -f "$SRC/README.md" ]; then cp "$SRC/README.md" ./README.md; fi
+          if [ -f "$SRC/.gitignore" ]; then cp "$SRC/.gitignore" ./.gitignore; fi
+          if [ -f "$SRC/.nojekyll" ]; then cp "$SRC/.nojekyll" ./.nojekyll; fi
+          if [ -f "$SRC/.github/workflows/pages.yml" ]; then
+            mkdir -p .github/workflows
+            cp "$SRC/.github/workflows/pages.yml" .github/workflows/pages.yml
+          fi
+
+      - name: Remove temporary upload scaffolding
+        shell: bash
+        run: |
+          rm -rf .bootstrap payload js css
+          rm -f .github/workflows/jekyll-gh-pages.yml
+          rm -f .github/workflows/static.yml
+          rm -f .github/workflows/materialize.yml
+
+      - name: Validate reconstructed site
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s index.html
+          test -s app.js
+          test -s styles.css
+          test -s data/catalog_765.json
+          test -s data/lesson_content.json
+          test -s data/pattern_guides.json
+          test -s data/sources.json
+          test -s data/taxonomy.json
+          test -s data/visual_experiments.json
+          node --check app.js
+          echo 'Site reconstruído e JavaScript validado.'
+
+      - name: Commit materialized source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'Nenhuma alteração para materializar.'
+            exit 0
+          fi
+          git commit -m 'feat: publish full ENEM interactive site source'
+          git push origin HEAD:main
