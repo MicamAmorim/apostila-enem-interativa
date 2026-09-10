@@ -259,4 +259,121 @@
   style.textContent=".geometry-reviewed .solution-step strong{line-height:1.45}.geometry-reviewed button{margin-top:8px}.geometry-reviewed .case-solution-step{border-color:rgba(255,200,87,.3)}";
   document.head.appendChild(style);
   document.title="Matemática ENEM — Geometria auditada";
+
+  // v7.1 — aplica a auditoria ANTES dos filtros, inclusive em itens já presentes no cache.
+  const EDITORIAL_OVERRIDES_V71 = {
+    "2025-136":{
+      primaryFamily:"proporcao",
+      families:["proporcao","unidades"],
+      primarySubtopic:"taxas_consumo",
+      subtopics:["taxas_consumo","razao_proporcao"],
+      answer:"C",
+      caseFamily:"proporcao",
+      caseId:"P5"
+    },
+    "2025-141":{
+      primaryFamily:"funcoes",
+      families:["funcoes","proporcao"],
+      primarySubtopic:"modelagem_algebrica",
+      subtopics:["modelagem_algebrica"],
+      answer:"C"
+    },
+    "2025-142":{
+      primaryFamily:"estatistica",
+      families:["estatistica","graficos"],
+      primarySubtopic:"mediana_moda",
+      subtopics:["mediana_moda","tabelas"],
+      answer:"C"
+    }
+  };
+
+  const ANSWER_OVERRIDES_V71 = {
+    "2025-138":"E","2025-139":"C","2025-144":"D","2025-148":"C",
+    "2025-149":"B","2025-153":"A","2025-161":"A","2025-164":"A",
+    "2025-170":"B","2025-171":"E","2025-173":"A","2025-177":"B"
+  };
+
+  function applyEditorialV71(q){
+    if(!q) return q;
+    const k=keyOf(q);
+    const ed=EDITORIAL_OVERRIDES_V71[k];
+    if(ed){
+      q.primaryFamily=ed.primaryFamily;
+      q.families=[...ed.families];
+      q.primarySubtopic=ed.primarySubtopic;
+      q.subtopics=[...ed.subtopics];
+      q.confidence="auditada";
+      if(q.scores) q.scores[ed.primaryFamily]=Math.max(99,q.scores[ed.primaryFamily]||0);
+      q.correctAlternative=ed.answer;
+      (q.alternatives||[]).forEach(a=>a.isCorrect=a.letter===ed.answer);
+    }
+    const auditedAnswer=ANSWER_OVERRIDES_V71[k];
+    if(auditedAnswer){
+      q.correctAlternative=auditedAnswer;
+      (q.alternatives||[]).forEach(a=>a.isCorrect=a.letter===auditedAnswer);
+    }
+    return q;
+  }
+
+  const fetchSelectedYearsV70=fetchSelectedYears;
+  fetchSelectedYears=async function(value){
+    const qs=await fetchSelectedYearsV70(value);
+    qs.forEach(applyEditorialV71);
+    return qs;
+  };
+
+  const renderQuestionsV70=renderQuestions;
+  renderQuestions=function(qs){
+    qs.forEach(applyEditorialV71);
+    const filtered=qs.filter(q=>q.families?.includes(state.family));
+    const counter=document.querySelector("[data-count]");
+    if(counter && filtered.length!==qs.length) counter.textContent=filtered.length;
+    return renderQuestionsV70(filtered);
+  };
+
+  const detectQuestionCaseV70=detectQuestionCase;
+  detectQuestionCase=function(q){
+    const ed=EDITORIAL_OVERRIDES_V71[keyOf(q)];
+    if(ed?.caseFamily && ed?.caseId){
+      const cc=(PATTERN_GUIDES[ed.caseFamily]?.cases||[]).find(x=>x.id===ed.caseId);
+      if(cc) return {...cc,score:99,confidence:"auditada"};
+    }
+    return detectQuestionCaseV70(q);
+  };
+
+  const buildGuidedSolutionV70=buildGuidedSolution;
+  buildGuidedSolution=function(q){
+    if(keyOf(q)==="2025-136"){
+      const correct=q.alternatives.find(a=>a.letter==="C");
+      const correctDisplay=correct?.text?inlineQuestionText(correct.text):"17";
+      return '<div class="solution-grid geometry-reviewed">'
+        +'<div class="solution-step case-solution-step"><small>Padrão relacionado</small>'
+        +'<p><strong>P5 · Taxas, consumo e produtividade</strong></p>'
+        +'<p>Transforme primeiro a rotina semanal em distância total e depois use a taxa de consumo para obter a capacidade mínima necessária.</p>'
+        +'<button type="button" class="secondary review-pattern-btn" data-review-case="P5">Revisar este padrão na seção anterior</button></div>'
+        +'<div class="solution-step"><small>Status editorial</small><p><span class="solution-review-badge review-ok">✓ Solução específica auditada</span></p></div>'
+        +'<div class="solution-step"><small>Como interpretar esta questão</small>'
+        +'<p>O fato de o recipiente ser um cilindro não exige fórmula de cilindro: as capacidades já são fornecidas em m³. O que se pede é escolher a menor capacidade que comporte o consumo de uma semana.</p></div>'
+        +'<div class="solution-step"><small>Resolução</small>'
+        +'<p><strong>1.</strong> Distância semanal: \\(30\\cdot7=210\\text{ km}\\).</p>'
+        +'<p><strong>2.</strong> O consumo é de \\(1\\text{ m}^3\\) a cada \\(13\\text{ km}\\).</p>'
+        +'<p><strong>3.</strong> Volume necessário: \\(V=\\dfrac{210}{13}\\approx16{,}15\\text{ m}^3\\).</p>'
+        +'<p><strong>4.</strong> Entre 10, 14, 17, 21 e 25 m³, a menor capacidade não inferior a 16,15 é 17 m³.</p></div>'
+        +'<div class="solution-step"><small>Relação matemática</small><p>\\(\\text{consumo semanal}=\\dfrac{\\text{distância semanal}}{13\\text{ km/m}^3}\\)</p></div>'
+        +'<div class="solution-step"><small>Conclusão</small><p><strong>Alternativa C — '+correctDisplay+' m³.</strong></p></div>'
+        +'</div>';
+    }
+    return buildGuidedSolutionV70(q);
+  };
+
+  try{
+    for(const arr of state.bankCache.values()){
+      if(Array.isArray(arr)) arr.forEach(applyEditorialV71);
+    }
+    (state.currentQuestions||[]).forEach(applyEditorialV71);
+  }catch(_){}
+
+  setTimeout(()=>{ try{ loadQuestionView(); }catch(_){} },0);
+  setTimeout(()=>{ try{ loadQuestionView(); }catch(_){} },900);
+
 })();
