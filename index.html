@@ -6,80 +6,35 @@
   <meta name="theme-color" content="#0b1020">
   <title>Matemática ENEM — Apostila Interativa</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b1020;color:#f3f6fb}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b1020;color:#f3f6fb}
     .boot{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 70% 20%,rgba(110,214,255,.10),transparent 28rem),#0b1020}
     .boot-card{width:min(560px,100%);padding:28px;border:1px solid #283652;border-radius:22px;background:#11182b;box-shadow:0 24px 80px rgba(0,0,0,.25)}
     .brand{display:flex;gap:13px;align-items:center;margin-bottom:24px}.mark{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#6ed6ff;color:#07111d;font-size:24px;font-weight:800}
-    h1{font-size:24px;margin:0 0 7px}p{color:#9ca8bd;line-height:1.6;margin:0}.progress{height:8px;margin:24px 0 10px;border-radius:99px;background:#202d47;overflow:hidden}.bar{height:100%;width:4%;background:#6ed6ff;border-radius:99px;transition:width .2s}.status{font-size:12px;color:#9ca8bd}.error{margin-top:16px;padding:12px;border:1px solid rgba(255,115,133,.35);border-radius:12px;color:#ffb0ba;background:rgba(255,115,133,.06);white-space:pre-wrap;display:none}
+    h1{font-size:24px;margin:0 0 7px}p{color:#9ca8bd;line-height:1.6;margin:0}.progress{height:8px;margin:24px 0 10px;border-radius:99px;background:#202d47;overflow:hidden}.bar{height:100%;width:78%;background:#6ed6ff;border-radius:99px;animation:load 1.2s ease-in-out infinite alternate}.status{font-size:12px;color:#9ca8bd}
+    @keyframes load{from{width:18%}to{width:92%}}
   </style>
 </head>
 <body>
   <main class="boot">
     <section class="boot-card">
-      <div class="brand"><div class="mark">Σ</div><div><h1>Apostila Interativa ENEM</h1><p>Preparando a versão completa v6…</p></div></div>
-      <div class="progress"><div class="bar" id="bar"></div></div>
-      <div class="status" id="status">Carregando módulos da apostila…</div>
-      <div class="error" id="error"></div>
+      <div class="brand"><div class="mark">Σ</div><div><h1>Apostila Interativa ENEM</h1><p>Carregando a versão completa v6…</p></div></div>
+      <div class="progress"><div class="bar"></div></div>
+      <div class="status">Inicializando fórmulas, experimentos visuais e banco ENEM 2009–2025…</div>
     </section>
   </main>
-<script>
-(async()=>{
-  const status=document.getElementById('status'),bar=document.getElementById('bar'),error=document.getElementById('error');
-  const set=(text,p)=>{status.textContent=text;bar.style.width=p+'%'};
-  try{
-    set('Carregando o pacote completo…',8);
-    const parts=[];
-    for(let i=0;i<=6;i++){
-      const name='.bootstrap/part-'+String(i).padStart(3,'0')+'.txt';
-      const r=await fetch(name,{cache:'force-cache'});
-      if(!r.ok) throw new Error('Falha ao carregar '+name+' (HTTP '+r.status+')');
-      parts.push((await r.text()).trim());
-      set('Carregando módulos… '+(i+1)+'/7',8+(i+1)*7);
-    }
-    const b64=parts.join('').replace(/\s+/g,'');
-    const raw=atob(b64);
-    const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
-    set('Descompactando a apostila…',62);
-    let tarBytes;
-    if('DecompressionStream' in window){
-      const ds=new DecompressionStream('gzip');
-      tarBytes=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(ds)).arrayBuffer());
-    }else{
-      await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
-      tarBytes=window.pako.ungzip(bytes);
-    }
-    set('Montando os módulos…',75);
-    const dec=new TextDecoder('utf-8');
-    const files={};
-    const readAscii=(arr,a,b)=>String.fromCharCode(...arr.slice(a,b)).replace(/\0.*$/,'').trim();
-    let off=0;
-    while(off+512<=tarBytes.length){
-      const head=tarBytes.slice(off,off+512);
-      if(head.every(x=>x===0)) break;
-      const name=readAscii(head,0,100);
-      const prefix=readAscii(head,345,500);
-      const full=(prefix?prefix+'/':'')+name;
-      const sizeText=readAscii(head,124,136).replace(/\0/g,'').trim();
-      const size=parseInt(sizeText||'0',8)||0;
-      const type=String.fromCharCode(head[156]||48);
-      off+=512;
-      if((type==='0'||type==='\0')&&size>=0){files[full]=dec.decode(tarBytes.slice(off,off+size));}
-      off+=Math.ceil(size/512)*512;
-    }
-    const find=(ending)=>{const k=Object.keys(files).find(x=>x===ending||x.endsWith('/'+ending));return k?files[k]:null};
-    const sourceHtml=find('index.html'),styles=find('styles.css'),app=find('app.js');
-    if(!sourceHtml||!styles||!app) throw new Error('O pacote foi lido, mas index.html, styles.css ou app.js não foram encontrados.');
-    set('Inicializando fórmulas, gráficos e banco ENEM…',91);
-    const safeApp=app.replace(/<\/script/gi,'<\\/script');
-    let page=sourceHtml
-      .replace(/<link\s+rel=["']stylesheet["']\s+href=["']styles\.css["']\s*\/?\s*>/i,'<style>'+styles+'</style>')
-      .replace(/<script\s+src=["']app\.js["']\s*>\s*<\/script>/i,'<script>'+safeApp+'<\\/script>');
-    set('Pronto.',100);
-    document.open();document.write(page);document.close();
-  }catch(e){
-    console.error(e);set('Não foi possível iniciar a apostila.',100);bar.style.background='#ff7385';error.style.display='block';error.textContent=String(e&&e.message?e.message:e)+'\n\nRecarregue a página. Se o problema persistir, abra o repositório e verifique a pasta .bootstrap.';
-  }
-})();
-</script>
+
+  <script>window.__SITE_B64="";</script>
+  <script src="payload/chunk-01.js"></script>
+  <script src="payload/chunk-02.js"></script>
+  <script src="payload/chunk-03.js"></script>
+  <script src="payload/chunk-04.js"></script>
+  <script src="payload/chunk-05b.js"></script>
+  <script src="payload/chunk-06.js"></script>
+  <script src="payload/chunk-07.js"></script>
+  <script src="payload/chunk-08.js"></script>
+  <script src="payload/chunk-09.js"></script>
+  <script src="payload/chunk-10.js"></script>
+  <script src="payload/boot.js"></script>
 </body>
 </html>
