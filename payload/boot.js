@@ -40,7 +40,7 @@
     }
 
     if(!html || !/<html[\s>]/i.test(html)) throw new Error('HTML reconstruído é inválido.');
-    html=html.replace('</body>','<script src="/canonical-map-2009-2016.js?v=20260910-1"></'+'script><script src="/canonical-map-2017-2025.js?v=20260910-1"></'+'script><script src="/geometry-review.js?v=20260910-3"></'+'script><script src="/geometry-hotfix.js?v=20260910-2"></'+'script><script src="/canonical-bank.js?v=20260910-1"></'+'script><script src="/canonical-integrity.js?v=20260910-1"></'+'script><script src="/author-practice-hotfix.js?v=20260910-1"></'+'script></body>');
+    html=html.replace('</body>','<script src="/canonical-map-2009-2016.js?v=20260910-1"></'+'script><script src="/canonical-map-2017-2025.js?v=20260910-1"></'+'script><script src="/geometry-review.js?v=20260910-3"></'+'script><script src="/geometry-hotfix.js?v=20260910-2"></'+'script><script src="/canonical-bank.js?v=20260910-1"></'+'script><script src="/visual-alternatives-runtime.js?v=20260910-1"></'+'script><script src="/canonical-integrity.js?v=20260910-1"></'+'script><script src="/author-practice-hotfix.js?v=20260910-1"></'+'script></body>');
     document.open();
     document.write(html);
     document.close();
